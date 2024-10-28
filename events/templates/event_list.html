@@ -1,0 +1,21 @@
+{% for event in events %}
+    <h2>{{ event.name }}</h2>
+    <p>{{ event.date }} | {{ event.location }}</p>
+    <p>{{ event.description }}</p>
+    <p>Category: {{ event.get_category_display }}</p>
+    <p>Capacity: {{ event.capacity }}</p>
+    
+    {% if event.is_fully_booked %}
+        <span>Fully Booked</span>
+    {% else %}
+        {% if user.is_authenticated %}
+            {% if event.id in booked_event_ids %}
+                <span>Booked</span>
+            {% else %}
+                <a href="{% url 'book_event' event.id %}">Book</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'login' %}?next={% url 'book_event' event.id %}">Log in to book</a>
+        {% endif %}
+    {% endif %}
+{% endfor %}

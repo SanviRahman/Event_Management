@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}My Booked Events{% endblock %}
+
+{% block content %}
+<h1>Your Booked Events</h1>
+
+{% if bookings %}
+    <ul>
+        {% for booking in bookings %}
+            <li>
+                <h2>{{ booking.event.name }}</h2>
+                <p>Date: {{ booking.event.date }}</p>
+                <p>Location: {{ booking.event.location }}</p>
+                <p>Description: {{ booking.event.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no booked events.</p>
+{% endif %}
+{% endblock %}
