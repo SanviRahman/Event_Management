@@ -21,7 +21,7 @@ def register(request):
             return redirect('profile')
     else:
         form = UserRegistrationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'events/layout/register.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -33,13 +33,13 @@ def user_login(request):
             return redirect('home')
         else:
             messages.error(request, "Invalid credentials")
-    return render(request, 'login.html')
+    return render(request, 'events/layout/login.html')
 
 @login_required
 def user_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
-    return redirect('login')
+    return redirect('events/layout/login')
 
 @login_required
 def profile(request):
@@ -48,10 +48,10 @@ def profile(request):
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, "Profile updated successfully!")
-            return redirect('profile')
+            return redirect('events/layout/profile')
     else:
         profile_form = UserProfileForm(instance=request.user.userprofile)
-    return render(request, 'profile.html', {'profile_form': profile_form})
+    return render(request, 'events/layout/profile.html', {'profile_form': profile_form})
 
 def event_list(request):
     events = Event.objects.all()
@@ -62,7 +62,7 @@ def event_list(request):
         booked_events = Booking.objects.filter(user=request.user)
         booked_event_ids = [booking.event.id for booking in booked_events]
     
-    return render(request, 'event_list.html', {'events': events, 'booked_event_ids': booked_event_ids})
+    return render(request, 'events/event_list.html', {'events': events, 'booked_event_ids': booked_event_ids})
 
 
 @login_required
@@ -77,7 +77,7 @@ def create_event(request):
             return redirect('event_list')
     else:
         form = EventForm()
-    return render(request, 'create_event.html', {'form': form})
+    return render(request, 'events/create_event.html', {'form': form})
 
 
 @login_required
@@ -93,7 +93,7 @@ def update_event(request, event_id):
             return redirect('event_list')
     else:
         form = EventForm(instance=event)
-    return render(request, 'update_event.html', {'form': form})
+    return render(request, 'events/update_event.html', {'form': form})
 
 
 @login_required
@@ -105,7 +105,7 @@ def delete_event(request, event_id):
         event.delete()
         messages.success(request, "Event deleted successfully!")
         return redirect('event_list')
-    return render(request, 'delete_event.html', {'event': event})
+    return render(request, 'events/delete_event.html', {'event': event})
 
 
 @login_required
